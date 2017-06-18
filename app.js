@@ -88,7 +88,7 @@ app.post('/webhook',function(req,res){
 								sendTextMessageAyuda(senderID)
 							break;
 							case 'CLICK_PSA':
-								psa.sendPsaButtonTemplate(senderID);
+								sendPsaButtonTemplate(senderID);
 								sendTextMessageAyuda(senderID)
 							break;
 							case 'CLICK_CALENDARIO':
@@ -100,7 +100,7 @@ app.post('/webhook',function(req,res){
 								sendCasoEspecialButtonTemplate(senderID);
 							break;
 							case 'CLICK_ADMITIDOS_PSA':
-								psa.sendAdmitidosPsaButtonTemplate(senderID);
+								sendAdmitidosPsaButtonTemplate(senderID);
 							break;
 							default:
 							
@@ -348,6 +348,89 @@ function sendButtonTemplate(senderID) {
 		}
 	}
 	callSendAPI(messageData)
+}
+
+// PSA
+function sendPsaButtonTemplate(senderID) {
+	var messageData = {
+		recipient: {
+			id: senderID
+		},
+		message: {
+			attachment: {
+				type: "template",
+				payload: {
+					template_type: "button",
+					text: psaInfo(),
+					buttons: [buttonTemplate("Leer más..","http://www.uagrm.edu.bo/formas/adm/files/2017_05_22_08_30_04.html")]
+				}
+			}
+		}
+	}
+	callSendAPI(messageData)	
+}
+
+function psaInfo() {
+	return'PROCEDIMIENTO PSA\nPASO 1: Pago\nPago de matrícula en entidades financieras con Carnet de Identidad original vigente.\n\nPASO 2: Test Psicotécnico y Preinscripción\nLLENAR CON LOS DATOS CORRESPONDIENTES EN EL FORMULARIO DE PREINSCRIPCIÓN E IMPRIMIR, página web: www.uagrm.edu.bo\n\nPASO 3: Inscripción\nPersonalmente debe entregar los requisitos según el calendario de inscripción en la Sala de Cómputo del Depto. Admisión Estudiantil,  Pabellón 145, Campus Universitario...'
+}
+
+// Admitidos PSA I - 2017
+function sendAdmitidosPsaButtonTemplate(recipientID) {
+	var messageData = {
+		recipient: {
+			id: recipientID
+		},
+		message: {
+			attachment: {
+				type: "template",
+				payload: {
+					template_type: "button",
+					text: admitidosInfo(),
+					buttons: [buttonTemplate("Leer más..","http://uagrm.edu.bo/unid_adm/registro/files/2015_07_14_16_56_45.html"),
+						buttonTemplatePostback("CLICK_UBICACIONES","Ubicaciones")]
+				}
+			}
+		}
+	}
+	callSendAPI(messageData)
+}
+
+function admitidosInfo() {
+	return "ESTUDIANTES NUEVOS (QUE FUERON ADMITIDOS A LA U.A.G.R.M.)\n\n-Deben seguir 6 pasos que se detallan a continuación.\nNota.- Si presenta algún bloqueo debe revisar su perfil académico en la sección Bloqueos.\nEn Leer más obtendrás más detalles.";
+}
+
+// ADMITIDOS PSA I - 2017 -> UBICACIONES
+function sendUbicacionesTemplate(senderID) {
+	var messageData = {
+		recipient: {
+			id: senderID
+		},
+		message: {
+			attachment: {
+				type: "template",
+				payload: {
+					template_type: "generic",
+					elements: [elementUbicacionesTemplate(),elementUbicacionesTemplate()]
+				}
+			}
+		}
+	}
+	callSendAPI(messageData)
+}
+
+function elementUbicacionesTemplate() {
+	return {
+		title: "1. Revisión Médica",
+		image_url: 'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563107/malla_informatica_jexiff.jpg',
+		//image_url: 'https://www.facebook.com/photo.php?fbid=10206844124994784&set=a.1488259599569.2061923.1026303721&type=3&theater',
+		subtitle: "Costo Bs.- 80",
+		//item_url: "http://www.uagrm.edu.bo/formas/adm/images/CARRERAS%20OFERTADAS%20%20PSA%20II%202017.jpg",
+		buttons: [
+			buttonTemplate("Ver malla","http://www.uagrm.edu.bo/carreras/plan_estudio.php?codigo=187&plan=3"),
+			buttonTemplatePostback("CLICK_IMG_MALLA_INF","Ver imagen"),
+			buttonTemplatePostback("CLICK_PDF_MALLA_INF","Ver tríptico")
+		]
+	}
 }
 
 function buttonTemplatePostback(payload,title) {
