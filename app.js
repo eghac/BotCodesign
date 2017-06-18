@@ -3,14 +3,14 @@ const bodyParser = require('body-parser');
 const request = require('request');
 var psa = require('./psa');
 
-	const PAGE_ACCESS_TOKEN = 'EAANsh9OhAE8BAPQ71PjeOK1ZAJhZBjP44ZBy6l4Tg3mb9K8DZA2rlT8pg0sPJdjyB2ZBDjSkbLUiMbi3AeiZBG7aqUf3VK8GoZBEZCuDoSxjWMHTgZBCvJWqkJ721xUTVc9qo35uSQU0U3xZA6tPDUHsG2aUQfWgZCEWsgbP1ZAgZCqTKkQZDZD';
+const PAGE_ACCESS_TOKEN = 'EAADn8p6PmsABAM7xuwZAeuwq6slxcpAYRy0EIFhOJ8SjOoAm6RGBimnXbXpPpyYOaLWZBbGLhb4x3MrpxV2JvUIJZCqfJrGWtdsGSxvyOdzdNkSm18qz0AzNd6U9RZASOAcCUp8GZA3XAwNOOVtFkfq1N4fQJCfkVODHqx1sDaAZDZD';
  
 var app = express()
 
 app.use(bodyParser.json())
 
-app.listen(3000,function(){
-	console.log('Server listen localhost:3000')
+app.listen(3010,function(){
+	console.log('Server listen localhost:3010')
 })
 
 app.get('/',function(req,res){
@@ -18,10 +18,10 @@ app.get('/',function(req,res){
 })
 
 app.get('/webhook',function(req,res){
-	if (req.query['hub.verify_token']=== 'cod_token') {
+	if (req.query['hub.verify_token']=== 'emp_token') {
 		console.log("Validación correcta!")
-		//res.send(req.query['hub.challenge'])
-		res.status(200).send(req.query['hub.challenge'])
+		res.send(req.query['hub.challenge'])
+		//res.status(200).send(req.query['hub.challenge'])
 	}else {
 		//res.send('No tenés que estar aquí.')
 		console.error("Validación fallida.");
@@ -39,11 +39,9 @@ app.post('/webhook',function(req,res){
 			var timeOfEvent = pageEntry.time;
 			//Iterando cada mensaje
 			pageEntry.messaging.forEach(function(messagingEvent){
-				if (messagingEvent.message) {
-					//getMessage(messagingEvent)
-					getMensaje(messagingEvent)
+				if (messagingEvent.message) {					
+					getMessage(messagingEvent)
 
-					//console.log(messagingEvent.message)
 				}else {
 					if (messagingEvent.postback && messagingEvent.postback.payload) {
 						var senderID = messagingEvent.sender.id;
@@ -94,46 +92,19 @@ app.post('/webhook',function(req,res){
 							case 'CLICK_CASO_ESPECIAL':
 								sendCasoEspecialButtonTemplate(senderID);
 							break;
+							case 'CLICK_ADMITIDOS_PSA':
+								psa.sendAdmitidosPsaButtonTemplate(senderID);
+							break;
 							default:
 							
 						}
 					}
 				}
-
-				 /*else {
-					if (messagingEvent.message == 'quick_replies') {
-						sendMessageQuickReplies(senderID,"Elige una categoría");
-					}
-				}*/
 			})
 		})
 	}
 	res.sendStatus(200)
 })
-
-function sendMessageQuickReplies(recipientID,text) {
-	var messageData = {
-		"recipient":{
-    "id":recipientID
-  },
-  "message":{
-    "text":text,
-    "quick_replies":[
-      {
-        "content_type":"text",
-        "title":"Música",
-        "payload":"MUSIC"
-      },
-      {
-        "content_type":"text",
-        "title":"Accesorios",
-        "payload":"ACCS"
-      }
-    ]
-  }
-	}
-	callSendAPI(messageData);
-}
 
 function sendMessageFile(recipientID,url) {
 	var messageData = {
@@ -152,14 +123,6 @@ function sendMessageFile(recipientID,url) {
 	callSendAPI(messageData);
 }
 
-function getStarted() {
-	var messageData = {
-		get_started: {
-			payload: "GET_STARTED_PAYLOAD"
-		}
-	}
-	callSendAPI(messageData);
-}
 // Envía una imagen como mensaje.
 function sendMessageImage(senderID,url) {
 	var messageData = {
@@ -238,15 +201,6 @@ function elementMallaRedTemplate() {
 	}
 }
 
-
-
-
-
-
-
-
-
-
 function sendMenuTemplate(senderID) {
 	var messageData = {
 		recipient: {
@@ -272,7 +226,7 @@ function elementMenuTemplate1(senderID) {
 		buttons: [
 			buttonTemplatePostback("CLICK_IMG_MAPA","Mapa UAGRM"),
 			buttonTemplatePostback("CLICK_PSA","PSA"),			
-			buttonTemplate("Dubs","https://www.facebook.com/dubs.uagrm.9/")			
+			buttonTemplatePostback("CLICK_ADMITIDOS_PSA","Admitidos PSA I/2017 - Bloqueos")
 		]
 	}
 }
@@ -347,70 +301,6 @@ function sendStartButtonTemplate(senderID) {
 }
 
 
-/*function sendStartButtonTemplate(senderID) {
-	var messageData = {
-		recipient: {
-			id: senderID
-		},
-		message: {
-			attachment: {
-				type: "template",
-				payload: {
-					template_type: "button",
-					text: "Elige una de las opciones y te mostraré la información que desees.",
-					buttons: [buttonTemplate("Calendario","http://www.uagrm.edu.bo/formas/adm/files/2017_05_22_08_30_04.html"),
-					buttonTemplatePostback("CLICK_INFO","Info"),
-					buttonTemplatePostback("CLICK_MALLA","Malla")]
-				}
-			}
-		}
-	}
-	callSendAPI(messageData)
-}*/
-function startPersistentMenu() {
-	var messageData = {
-		"persistent_menu":[
-		    {
-		      "locale":"default",
-		      "composer_input_disabled":true,
-		      "call_to_actions":[
-		        {
-		          "title":"My Account",
-		          "type":"nested",
-		          "call_to_actions":[
-		            {
-		              "title":"Pay Bill",
-		              "type":"postback",
-		              "payload":"PAYBILL_PAYLOAD"
-		            },
-		            {
-		              "title":"History",
-		              "type":"postback",
-		              "payload":"HISTORY_PAYLOAD"
-		            },
-		            {
-		              "title":"Contact Info",
-		              "type":"postback",
-		              "payload":"CONTACT_INFO_PAYLOAD"
-		            }
-		          ]
-		        },
-		        {
-		          "type":"web_url",
-		          "title":"Latest News",
-		          "url":"http://petershats.parseapp.com/hat-news",
-		          "webview_height_ratio":"full"
-		        }
-		      ]
-		    },
-		    {
-		      "locale":"zh_CN",
-		      "composer_input_disabled":false
-		    }
-  		]
-	}
-	callSendAPI(messageData);
-}
 function sendButtonTemplate(senderID) {
 	var messageData = {
 		recipient: {
@@ -479,7 +369,7 @@ function buttonTemplate(title,url) {
 	}
 }
 
-function  getMensaje(event) {
+function  getMessage(event) {
 	var senderID = event.sender.id;
 	var recipientID = event.recipient.id;
 	var timeOfMessage = event.timestamp;
@@ -546,4 +436,82 @@ function isContain(text,word) {
 
 function toLowerCaseH(word) {
 	return word.toLowerCase();
+}
+
+function sendMessageQuickReplies(recipientID,text) {
+	var messageData = {
+		"recipient":{
+    "id":recipientID
+  },
+  "message":{
+    "text":text,
+    "quick_replies":[
+      {
+        "content_type":"text",
+        "title":"Música",
+        "payload":"MUSIC"
+      },
+      {
+        "content_type":"text",
+        "title":"Accesorios",
+        "payload":"ACCS"
+      }
+    ]
+  }
+	}
+	callSendAPI(messageData);
+}
+
+function getStarted() {
+	var messageData = {
+		get_started: {
+			payload: "GET_STARTED_PAYLOAD"
+		}
+	}
+	callSendAPI(messageData);
+}
+
+function startPersistentMenu() {
+	var messageData = {
+		"persistent_menu":[
+		    {
+		      "locale":"default",
+		      "composer_input_disabled":true,
+		      "call_to_actions":[
+		        {
+		          "title":"My Account",
+		          "type":"nested",
+		          "call_to_actions":[
+		            {
+		              "title":"Pay Bill",
+		              "type":"postback",
+		              "payload":"PAYBILL_PAYLOAD"
+		            },
+		            {
+		              "title":"History",
+		              "type":"postback",
+		              "payload":"HISTORY_PAYLOAD"
+		            },
+		            {
+		              "title":"Contact Info",
+		              "type":"postback",
+		              "payload":"CONTACT_INFO_PAYLOAD"
+		            }
+		          ]
+		        },
+		        {
+		          "type":"web_url",
+		          "title":"Latest News",
+		          "url":"http://petershats.parseapp.com/hat-news",
+		          "webview_height_ratio":"full"
+		        }
+		      ]
+		    },
+		    {
+		      "locale":"zh_CN",
+		      "composer_input_disabled":false
+		    }
+  		]
+	}
+	callSendAPI(messageData);
 }

@@ -1,6 +1,28 @@
-const PAGE_ACCESS_TOKEN = 'EAANsh9OhAE8BAPQ71PjeOK1ZAJhZBjP44ZBy6l4Tg3mb9K8DZA2rlT8pg0sPJdjyB2ZBDjSkbLUiMbi3AeiZBG7aqUf3VK8GoZBEZCuDoSxjWMHTgZBCvJWqkJ721xUTVc9qo35uSQU0U3xZA6tPDUHsG2aUQfWgZCEWsgbP1ZAgZCqTKkQZDZD';
 const request = require('request');
 var apiFb = require('./apifb');
+
+function sendAdmitidosPsaButtonTemplate(recipientID) {
+	var messageData = {
+		recipient: {
+			id: recipientID
+		},
+		message: {
+			attachment: {
+				type: "template",
+				payload: {
+					template_type: "button",
+					text: admitidosInfo(),
+					buttons: [buttonTemplate("Leer más..","http://uagrm.edu.bo/unid_adm/registro/files/2015_07_14_16_56_45.html")]
+				}
+			}
+		}
+	}
+	apiFb.callSendAPI(messageData)
+}
+
+function admitidosInfo() {
+	return "ESTUDIANTES NUEVOS (QUE FUERON ADMITIDOS A LA U.A.G.R.M.)\n\n-Deben seguir 6 pasos que se detallan a continuación.\nNota.- Si presenta algún bloqueo debe revisar su perfil académico en la sección Bloqueos.\nEn Leer más obtendrás más detalles.";
+}
 
 function sendPsaButtonTemplate(senderID) {
 	var messageData = {
@@ -36,3 +58,4 @@ function buttonTemplate(title,url) {
 
 
 exports.sendPsaButtonTemplate = sendPsaButtonTemplate;
+exports.sendAdmitidosPsaButtonTemplate = sendAdmitidosPsaButtonTemplate;
