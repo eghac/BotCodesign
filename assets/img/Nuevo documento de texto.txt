@@ -85,3 +85,11 @@ curl -X DELETE -H "Content-Type: application/json" -d '{
     "persistent_menu"
   ]
 }' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAANsh9OhAE8BAPQ71PjeOK1ZAJhZBjP44ZBy6l4Tg3mb9K8DZA2rlT8pg0sPJdjyB2ZBDjSkbLUiMbi3AeiZBG7aqUf3VK8GoZBEZCuDoSxjWMHTgZBCvJWqkJ721xUTVc9qo35uSQU0U3xZA6tPDUHsG2aUQfWgZCEWsgbP1ZAgZCqTKkQZDZD"
+
+//Crear botón empezar
+
+curl -X POST -H "Content-Type: application/json" -d '{ 
+  "get_started":{
+    "payload":"GET_STARTED_PAYLOAD"
+  }
+}' "https://graph.facebook.com/v2.6/me/messenger_profile?access_token=EAADn8p6PmsABAM7xuwZAeuwq6slxcpAYRy0EIFhOJ8SjOoAm6RGBimnXbXpPpyYOaLWZBbGLhb4x3MrpxV2JvUIJZCqfJrGWtdsGSxvyOdzdNkSm18qz0AzNd6U9RZASOAcCUp8GZA3XAwNOOVtFkfq1N4fQJCfkVODHqx1sDaAZDZD"

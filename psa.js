@@ -44,7 +44,7 @@ function sendPsaButtonTemplate(senderID) {
 }
 
 function psaInfo() {
-	return'PROCEDIMIENTO\nPASO 1: Pago\nPago de matrícula en entidades financieras con Carnet de Identidad original vigente.\n\nPASO 2: Test Psicotécnico y Preinscripción\nLLENAR CON LOS DATOS CORRESPONDIENTES EN EL FORMULARIO DE PREINSCRIPCIÓN E IMPRIMIR, página web: www.uagrm.edu.bo\n\nPASO 3: Inscripción\nPersonalmente debe entregar los requisitos según el calendario de inscripción en la Sala de Cómputo del Depto. Admisión Estudiantil,  Pabellón 145, Campus Universitario...'
+	return'PROCEDIMIENTO PSA\nPASO 1: Pago\nPago de matrícula en entidades financieras con Carnet de Identidad original vigente.\n\nPASO 2: Test Psicotécnico y Preinscripción\nLLENAR CON LOS DATOS CORRESPONDIENTES EN EL FORMULARIO DE PREINSCRIPCIÓN E IMPRIMIR, página web: www.uagrm.edu.bo\n\nPASO 3: Inscripción\nPersonalmente debe entregar los requisitos según el calendario de inscripción en la Sala de Cómputo del Depto. Admisión Estudiantil,  Pabellón 145, Campus Universitario...'
 }
 
 function buttonTemplate(title,url) {

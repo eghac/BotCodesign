@@ -45,10 +45,10 @@ app.post('/webhook',function(req,res){
 				}else {
 					if (messagingEvent.postback && messagingEvent.postback.payload) {
 						var senderID = messagingEvent.sender.id;
-						//startPersistentMenu();
+						
 						switch(messagingEvent.postback.payload) {
 							case 'GET_STARTED_PAYLOAD':
-								sendTextMessage(senderID,"¡Genial! Tengo información lista para ti. Presiona un botón y te mostraré la información que deseas recibir.");
+								sendTextMessage(senderID,"¡Genial! Tengo información lista para ti.");
 								sendStartButtonTemplate(senderID);
 							break;
 							case 'CLICK_INFO':
@@ -56,8 +56,10 @@ app.post('/webhook',function(req,res){
 		' Tengo información lista para ti, por favor responde este mensaje con la palabra relacionada a la información '+
 		'que deseas obtener.\nRETIRO o PSA o MALLA o BANCO o CAMBIO DE CARRERA');
 							break;
-							case 'CLICK_MALLA':								
+							case 'CLICK_MALLA':
+								sendTextMessage(senderID,"Mallas curriculares de la FICCT:")						
 								sendMallaTemplate(senderID)
+								sendTextMessageAyuda(senderID)								
 							break;
 							case 'CLICK_IMG_MALLA_INF':								
 								sendMessageImage(senderID,'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563107/malla_informatica_jexiff.jpg')
@@ -81,13 +83,18 @@ app.post('/webhook',function(req,res){
 								sendMenuTemplate(senderID)
 							break;
 							case 'CLICK_IMG_MAPA':
+								sendTextMessage(senderID,"Mapa de la UAGRM.")
 								sendMessageImage(senderID,'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497726810/mapa_uagrm_ekdfpw.jpg')
+								sendTextMessageAyuda(senderID)
 							break;
 							case 'CLICK_PSA':
 								psa.sendPsaButtonTemplate(senderID);
+								sendTextMessageAyuda(senderID)
 							break;
 							case 'CLICK_CALENDARIO':
+								sendTextMessage(senderID,"Calendario académico:")
 								sendMessageImage(senderID,'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497738551/calendario_academico_tv8z94.jpg')
+								sendTextMessageAyuda(senderID)								
 							break;
 							case 'CLICK_CASO_ESPECIAL':
 								sendCasoEspecialButtonTemplate(senderID);
@@ -287,7 +294,7 @@ function sendStartButtonTemplate(senderID) {
 				type: "template",
 				payload: {
 					template_type: "button",
-					text: "Elige una de las opciones y te mostraré la información que desees.",
+					text: "Elige una de las opciones a continuación y te mostraré más información al respecto.",
 					buttons: [
 						buttonTemplatePostback("CLICK_CALENDARIO","Calendario académico"),
 						buttonTemplatePostback("CLICK_MALLA","Mallas Curriculares"),
@@ -299,7 +306,28 @@ function sendStartButtonTemplate(senderID) {
 	}
 	callSendAPI(messageData)
 }
-
+function sendMenuButtonTemplate(senderID) {
+	var messageData = {
+		recipient: {
+			id: senderID
+		},
+		message: {
+			attachment: {
+				type: "template",
+				payload: {
+					template_type: "button",
+					text: "Tengo estas opciones para ti.\nElige una de ellas y te mostraré más información al respecto.",
+					buttons: [
+						buttonTemplatePostback("CLICK_CALENDARIO","Calendario académico"),
+						buttonTemplatePostback("CLICK_MALLA","Mallas Curriculares"),
+						buttonTemplatePostback("CLICK_VER_MAS","Más opciones")
+					]
+				}
+			}
+		}
+	}
+	callSendAPI(messageData)
+}
 
 function sendButtonTemplate(senderID) {
 	var messageData = {
@@ -386,18 +414,35 @@ function  getMessage(event) {
 		if (isContain(toLowerCaseH(messageText),'hola')) {
 			sendTextMessage(senderID,"¡Hola! Tengo información lista para ti.");
 			sendStartButtonTemplate(senderID);
-			// Muestra un menú de opciones a elegir
-			//sendMenuTemplate(senderID);
 		}else if (isContain(toLowerCaseH(messageText),'triptico') ||
 			isContain(toLowerCaseH(messageText),'tríptico') ||
 			isContain(toLowerCaseH(messageText),'malla')) {
 			sendMallaTemplate(senderID);
+		}else if (isContain(toLowerCaseH(messageText),'info')) {
+			sendTextMessage(senderID,"Tengo información lista para ti.");
+			sendStartButtonTemplate(senderID);
+		}else if(isContain(toLowerCaseH(messageText),'psa')) {
+			sendTextMessage(senderID,"Tengo estas opciones a continuación.")
+			sendMenuTemplate(senderID)
+			sendTextMessageAyuda(senderID)
+		}else if (isContain(toLowerCaseH(messageText),'gracias')) {
+			sendTextMessage(senderID,"¡De nada!. Estoy a tu disposición cuando lo requieras.")
+		}else {
+			sendTextMessage(senderID,"No entendí bien tu pregunta.\nTransferiré la misma a Eliot para que me enseñe más al respecto.")			
+			sendMenuButtonTemplate(senderID)
+
 		}
 	} else if(attachments) {
 		console.log("Hola! seccion de attachments");
 	} else if (quick_replies){
 		sendMessageQuickReplies(senderID,"Elige una categoría");
 	}
+}
+
+function sendTextMessageAyuda(recipientId) {
+	setTimeout(function() {
+		sendTextMessage(recipientId,"¿En qué más puedo ayudarte?")	
+	},6000);
 }
 
 function sendTextMessage (recipientId,message) {
