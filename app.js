@@ -9,7 +9,8 @@ var app = express()
 
 app.use(bodyParser.json())
 
-app.listen(3010,function(){
+var PORT = process.env.PORT || 3012;
+app.listen(PORT,function(){
 	console.log('Server listen localhost:3010')
 })
 
@@ -564,7 +565,7 @@ function  getMessage(event) {
 function sendTextMessageAyuda(recipientId) {
 	setTimeout(function() {
 		sendTextMessage(recipientId,"¿En qué más puedo ayudarte?")	
-	},6000);
+	},7000);
 }
 
 function sendTextMessage (recipientId,message) {
