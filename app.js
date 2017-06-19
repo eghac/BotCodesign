@@ -62,25 +62,32 @@ app.post('/webhook',function(req,res){
 								sendTextMessageAyuda(senderID)								
 							break;
 							case 'CLICK_IMG_MALLA_INF':								
-								sendMessageImage(senderID,'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563107/malla_informatica_jexiff.jpg')
+								sendMessageImage(senderID,'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563107/malla_informatica_jexiff.jpg');
+								sendTextMessageAyuda(senderID);
 							break;	
 							case 'CLICK_IMG_MALLA_SIS':
-								sendMessageImage(senderID,'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563037/malla_sistemas_euqjvn.jpg')
+								sendMessageImage(senderID,'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563037/malla_sistemas_euqjvn.jpg');
+								sendTextMessageAyuda(senderID);
 							break;
 							case 'CLICK_IMG_MALLA_RED':
 								sendMessageImage(senderID,'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563041/malla_redes_dpzos0.jpg')
+								sendTextMessageAyuda(senderID);
 							break;
 							case 'CLICK_PDF_MALLA_INF':								
 								sendMessageFile(senderID,'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563120/TripticoINF_nyhb6m.pdf');
+								sendTextMessageAyuda(senderID);
 							break;
 							case 'CLICK_PDF_MALLA_SIS':
-								sendMessageFile(senderID,'https://res.cloudinary.com/dwxz1lnfb/image/upload/v1497738328/TripticoSIS_el6uo7.pdf')
+								sendMessageFile(senderID,'https://res.cloudinary.com/dwxz1lnfb/image/upload/v1497738328/TripticoSIS_el6uo7.pdf');
+								sendTextMessageAyuda(senderID);
 							break;
 							case 'CLICK_PDF_MALLA_RED':
 								sendMessageFile(senderID,'https://res.cloudinary.com/dwxz1lnfb/image/upload/v1497564473/TripticoRED_lblvgv.pdf');
+								sendTextMessageAyuda(senderID);
 							break;
 							case 'CLICK_VER_MAS':
-								sendMenuTemplate(senderID)
+								sendMenuTemplate(senderID);
+								sendTextMessageAyuda(senderID);
 							break;
 							case 'CLICK_IMG_MAPA':
 								sendTextMessage(senderID,"Mapa de la UAGRM.")
@@ -98,9 +105,14 @@ app.post('/webhook',function(req,res){
 							break;
 							case 'CLICK_CASO_ESPECIAL':
 								sendCasoEspecialButtonTemplate(senderID);
+								sendTextMessageAyuda(senderID);
 							break;
 							case 'CLICK_ADMITIDOS_PSA':
 								sendAdmitidosPsaButtonTemplate(senderID);
+								sendTextMessageAyuda(senderID);
+							break;
+							case 'CLICK_UBICACIONES':
+								sendUbicacionesTemplate(senderID);
 							break;
 							default:
 							
@@ -410,7 +422,9 @@ function sendUbicacionesTemplate(senderID) {
 				type: "template",
 				payload: {
 					template_type: "generic",
-					elements: [elementUbicacionesTemplate(),elementUbicacionesTemplate()]
+					elements: [elementUbicacionesTemplate1(),
+					elementUbicacionesTemplate2(),
+					elementUbicacionesTemplate3()]
 				}
 			}
 		}
@@ -418,17 +432,38 @@ function sendUbicacionesTemplate(senderID) {
 	callSendAPI(messageData)
 }
 
-function elementUbicacionesTemplate() {
+function elementUbicacionesTemplate1() {
 	return {
 		title: "1. Revisión Médica",
-		image_url: 'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563107/malla_informatica_jexiff.jpg',
+		//image_url: 'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563107/malla_informatica_jexiff.jpg',
 		//image_url: 'https://www.facebook.com/photo.php?fbid=10206844124994784&set=a.1488259599569.2061923.1026303721&type=3&theater',
-		subtitle: "Costo Bs.- 80",
+		subtitle: "Costo Bs.- 80 Pagar en caja Campus",
 		//item_url: "http://www.uagrm.edu.bo/formas/adm/images/CARRERAS%20OFERTADAS%20%20PSA%20II%202017.jpg",
 		buttons: [
-			buttonTemplate("Ver malla","http://www.uagrm.edu.bo/carreras/plan_estudio.php?codigo=187&plan=3"),
-			buttonTemplatePostback("CLICK_IMG_MALLA_INF","Ver imagen"),
-			buttonTemplatePostback("CLICK_PDF_MALLA_INF","Ver tríptico")
+			buttonTemplate("Ver ubicación","https://www.google.com.bo/maps/place/17%C2%B046'36.2%22S+63%C2%B011'27.3%22W/@-17.776724,-63.1914572,19z/data=!3m1!4b1!4m5!3m4!1s0x0:0x0!8m2!3d-17.776724!4d-63.19091?hl=es-419&authuser=0&authuser=0&hl=es-419")
+		]
+	}
+}
+function elementUbicacionesTemplate2() {
+	return {
+		title: "2. Análisis clínico",
+		//image_url: 'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563107/malla_informatica_jexiff.jpg',		
+		subtitle: "Costo Bs.- 120 Pagar en el módulo medicina",
+		//item_url: "http://www.uagrm.edu.bo/formas/adm/images/CARRERAS%20OFERTADAS%20%20PSA%20II%202017.jpg",
+		buttons: [
+			buttonTemplate("Ver ubicación","https://www.google.com.bo/maps/place/17%C2%B046'31.0%22S+63%C2%B011'53.9%22W/@-17.775278,-63.1988492,193m/data=!3m2!1e3!4b1!4m5!3m4!1s0x0:0x0!8m2!3d-17.775278!4d-63.198302?hl=es-419&authuser=0&authuser=0&hl=es-419")
+		]
+	}
+}
+function elementUbicacionesTemplate3() {
+	return {
+		title: "3. Fotografía",
+		//image_url: 'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563107/malla_informatica_jexiff.jpg',
+		//image_url: 'https://www.facebook.com/photo.php?fbid=10206844124994784&set=a.1488259599569.2061923.1026303721&type=3&theater',
+		subtitle: "Costo Bs.- 12 Pagar en caja Campus\nVer ubicación para saber en donde sacarse la Fotografía",
+		//item_url: "http://www.uagrm.edu.bo/formas/adm/images/CARRERAS%20OFERTADAS%20%20PSA%20II%202017.jpg",
+		buttons: [
+			buttonTemplate("Ver ubicación","https://www.google.com.bo/maps/place/17%C2%B046'40.4%22S+63%C2%B011'29.2%22W/@-17.777881,-63.1920887,229m/data=!3m2!1e3!4b1!4m5!3m4!1s0x0:0x0!8m2!3d-17.777881!4d-63.191439?hl=es-419&authuser=0&authuser=0&hl=es-419")
 		]
 	}
 }
@@ -485,8 +520,12 @@ function  getMessage(event) {
 	var recipientID = event.recipient.id;
 	var timeOfMessage = event.timestamp;
 	var message = event.message;
-	console.log("Mensaje recibido por el usuario %d por la págona %d",senderID,recipientID);
+	//var a = callUserAPI(senderID);
+	//var first_name = a.first_name;
 
+	console.log("Mensaje recibido por el usuario %d por la págona %d",senderID,recipientID);
+	//console.log("El nombre es %d",a);
+	//console.log(a);
 	var messageID = message.mid;
 	var messageText = message.text;
 	var attachments = message.attachments;
@@ -550,10 +589,31 @@ function callSendAPI (messageData) {
 			console.log("Mensaje enviado con éxito!")
 			var recipientID = body.recipient_id;
 			var messageID = body.message_id;
+			//console.log(recipientID);
 		} else {
 			console.log("No fué posible enviar el mensaje!")
 		}
 	});
+}
+
+function callUserAPI (user_id) {
+	var res = request({
+		uri: 'https://graph.facebook.com/v2.6/'+user_id+'?access_token='+ PAGE_ACCESS_TOKEN,
+		method: 'GET',
+		json:true
+	}, function(error, response, body) {
+		if (!error) {
+			console.log("Mensaje enviado con éxito desde CALLUSERAPI!")
+			var recipientID = body.recipient_id;
+			var messageID = body.message_id;
+			/*console.log(body)
+			console.log(body.first_name)*/
+			//return body;
+		} else {
+			console.log("No fué posible enviar el mensaje!")
+		}
+	});
+	//return res;
 }
 
 
