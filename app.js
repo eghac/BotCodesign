@@ -246,7 +246,7 @@ function elementMenuTemplate1(senderID) {
 		buttons: [
 			buttonTemplatePostback("CLICK_IMG_MAPA","Mapa UAGRM"),
 			buttonTemplatePostback("CLICK_PSA","PSA"),			
-			buttonTemplatePostback("CLICK_ADMITIDOS_PSA","Admitidos PSA I/2017 - Bloqueos")
+			buttonTemplatePostback("CLICK_ADMITIDOS_PSA","Para admitidos PSA I/2017")
 		]
 	}
 }
