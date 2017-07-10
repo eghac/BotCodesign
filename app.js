@@ -409,7 +409,7 @@ function sendAdmitidosPsaButtonTemplate(recipientID) {
 }
 
 function admitidosInfo() {
-	return "ESTUDIANTES NUEVOS (QUE FUERON ADMITIDOS A LA U.A.G.R.M.)\n\n-Deben seguir 6 pasos que se detallan a continuación.\nNota.- Si presenta algún bloqueo debe revisar su perfil académico en la sección Bloqueos.\nEn Leer más obtendrás más detalles.";
+	return "ESTUDIANTES NUEVOS (QUE FUERON ADMITIDOS A LA U.A.G.R.M.)\n\n-Deben seguir 6 pasos que se detallan a continuación.\nNota.- Si presenta algún bloqueo debe revisar su perfil académico en la sección Bloqueos.\nEn Leer más.. obtendrás más detalles sobre los pagos a realizar.";
 }
 
 // ADMITIDOS PSA I - 2017 -> UBICACIONES
