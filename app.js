@@ -58,9 +58,9 @@ app.post('/webhook',function(req,res){
 		'que deseas obtener.\nRETIRO o PSA o MALLA o BANCO o CAMBIO DE CARRERA');
 							break;
 							case 'CLICK_MALLA':
-								sendTextMessage(senderID,"Mallas curriculares de la FICCT:")						
+								sendTextMessage(senderID,"Mallas curriculares de la FICCT:")
 								sendMallaTemplate(senderID)
-								sendTextMessageAyuda(senderID)								
+								sendTextMessageAyuda(senderID)
 							break;
 							case 'CLICK_IMG_MALLA_INF':								
 								sendMessageImage(senderID,'http://res.cloudinary.com/dwxz1lnfb/image/upload/v1497563107/malla_informatica_jexiff.jpg');
@@ -540,7 +540,9 @@ function  getMessage(event) {
 		}else if (isContain(toLowerCaseH(messageText),'triptico') ||
 			isContain(toLowerCaseH(messageText),'tríptico') ||
 			isContain(toLowerCaseH(messageText),'malla')) {
-			sendMallaTemplate(senderID);
+			sendTextMessage(senderID,"Mallas curriculares de la FICCT:")
+			sendMallaTemplate(senderID)
+			sendTextMessageAyuda(senderID)
 		}else if (isContain(toLowerCaseH(messageText),'info')) {
 			sendTextMessage(senderID,"Tengo información lista para ti.");
 			sendStartButtonTemplate(senderID);
