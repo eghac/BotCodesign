@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const request = require('request');
-var psa = require('./psa');
+//var psa = require('./psa');
 
 //const PAGE_ACCESS_TOKEN = 'EAADn8p6PmsABAM7xuwZAeuwq6slxcpAYRy0EIFhOJ8SjOoAm6RGBimnXbXpPpyYOaLWZBbGLhb4x3MrpxV2JvUIJZCqfJrGWtdsGSxvyOdzdNkSm18qz0AzNd6U9RZASOAcCUp8GZA3XAwNOOVtFkfq1N4fQJCfkVODHqx1sDaAZDZD';
 const PAGE_ACCESS_TOKEN = 'EAADn8p6PmsABAN8QTxk53bhrgZBgHrvBI5pXlPab6tfvOLZBZC5KeI3iQBuNu9AREJxSgWPQZCDBUWvQdu3dj9Bxat7oBlVQlJywS4sgEdE7twgymCXaIriZBZBEFJSCRA3R3kqksKBvYXD3jfE8Y8jlkLZAaY9ALM2jQ5ncR6ungZDZD';
@@ -9,7 +9,7 @@ var app = express()
 
 app.use(bodyParser.json())
 
-var PORT = process.env.PORT || 3012;
+var PORT = process.env.PORT || 3010;
 app.listen(PORT,function(){
 	console.log('Server listen localhost:3010')
 })
